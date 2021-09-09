@@ -6,27 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.tourismapp.R
 import com.dicoding.tourismapp.core.data.Resource
 import com.dicoding.tourismapp.core.ui.TourismAdapter
-import com.dicoding.tourismapp.core.ui.ViewModelFactory
 import com.dicoding.tourismapp.databinding.FragmentHomeBinding
 import com.dicoding.tourismapp.detail.DetailTourismActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
-
+    private val homeViewModel: HomeViewModel by viewModels()
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -43,9 +42,6 @@ class HomeFragment : Fragment() {
                 startActivity(intent)
             }
 
-            val factory = ViewModelFactory.getInstance(requireActivity())
-            homeViewModel = ViewModelProvider(this, factory)[HomeViewModel::class.java]
-
             homeViewModel.tourism.observe(viewLifecycleOwner, { tourism ->
                 if (tourism != null) {
                     when (tourism) {
@@ -57,7 +53,8 @@ class HomeFragment : Fragment() {
                         is Resource.Error -> {
                             binding.progressBar.visibility = View.GONE
                             binding.viewError.root.visibility = View.VISIBLE
-                            binding.viewError.tvError.text = tourism.message ?: getString(R.string.something_wrong)
+                            binding.viewError.tvError.text =
+                                tourism.message ?: getString(R.string.something_wrong)
                         }
                     }
                 }
