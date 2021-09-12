@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class FavoriteFragment : Fragment() {
 
     private val favoriteViewModel: FavoriteViewModel by viewModels()
+
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
@@ -42,8 +43,7 @@ class FavoriteFragment : Fragment() {
 
             favoriteViewModel.favoriteTourism.observe(viewLifecycleOwner, { dataTourism ->
                 tourismAdapter.setData(dataTourism)
-                binding.viewEmpty.root.visibility =
-                    if (dataTourism.isNotEmpty()) View.GONE else View.VISIBLE
+                binding.viewEmpty.root.visibility = if (dataTourism.isNotEmpty()) View.GONE else View.VISIBLE
             })
 
             with(binding.rvTourism) {

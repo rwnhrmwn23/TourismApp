@@ -13,15 +13,22 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class DetailTourismActivity : AppCompatActivity() {
 
-    private val detailTourismViewModel: DetailTourismViewModel by viewModels()
+    companion object {
+        const val EXTRA_DATA = "extra_data"
+    }
+
     private lateinit var binding: ActivityDetailTourismBinding
+
+    private val detailTourismViewModel: DetailTourismViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailTourismBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+//        hapus kode berikut
+//        val factory = ViewModelFactory.getInstance(this)
+//        detailTourismViewModel = ViewModelProvider(this, factory)[DetailTourismViewModel::class.java]
 
         val detailTourism = intent.getParcelableExtra<Tourism>(EXTRA_DATA)
         showDetailTourism(detailTourism)
@@ -47,23 +54,9 @@ class DetailTourismActivity : AppCompatActivity() {
 
     private fun setStatusFavorite(statusFavorite: Boolean) {
         if (statusFavorite) {
-            binding.fab.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_favorite_white
-                )
-            )
+            binding.fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_favorite_white))
         } else {
-            binding.fab.setImageDrawable(
-                ContextCompat.getDrawable(
-                    this,
-                    R.drawable.ic_not_favorite_white
-                )
-            )
+            binding.fab.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_not_favorite_white))
         }
-    }
-
-    companion object {
-        const val EXTRA_DATA = "extra_data"
     }
 }
